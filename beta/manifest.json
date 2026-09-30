@@ -1,9 +1,9 @@
 {
-  "version": "0.7.3",
+  "version": "0.7.4",
   "channel": "beta",
-  "file": "packages/afs-controller_0.7.3_amd64.deb",
-  "sha256": "d2a335c5c81898d77f724a21f1f82a07530dcc22379ee55c51bde596a848f9e4",
-  "size": 4166756,
+  "file": "packages/afs-controller_0.7.4_amd64.deb",
+  "sha256": "b32cc89dcff8208259616808d4508808833402eae0f6233fc042513d9f867d7c",
+  "size": 4168588,
   "published": "2026-09-30",
-  "notes": "Bluetooth connects more reliably"
+  "notes": "The unit stays visible over Bluetooth"
 }
