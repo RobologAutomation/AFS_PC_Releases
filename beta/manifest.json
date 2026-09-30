@@ -1,9 +1,9 @@
 {
-  "version": "0.8.0",
+  "version": "0.8.1",
   "channel": "beta",
-  "file": "packages/afs-controller_0.8.0_amd64.deb",
-  "sha256": "afcd77a2049f8f8372b7640c64fc9719a7b687f47ab915d3573ea5b96bb22995",
-  "size": 4248568,
+  "file": "packages/afs-controller_0.8.1_amd64.deb",
+  "sha256": "291ffe424daad7b2a84bc5add68c925b4dc30d94bbcabf2783e347ec9b0609d3",
+  "size": 4248624,
   "published": "2026-09-30",
-  "notes": "Software update from the technician app"
+  "notes": "Test release for the app's Install button"
 }
