@@ -1,9 +1,9 @@
 {
-  "version": "0.9.1",
+  "version": "0.9.2",
   "channel": "beta",
-  "file": "packages/afs-controller_0.9.1_amd64.deb",
-  "sha256": "d557f5fdfd59862e9c0c0a2d058ebac61a7503a172ff7d973add4448c9d21ef3",
-  "size": 4291684,
+  "file": "packages/afs-controller_0.9.2_amd64.deb",
+  "sha256": "727f3690dfb977597635c4380b316b54877ad262bd930e387c67685f81206a7b",
+  "size": 4293212,
   "published": "2026-09-30",
-  "notes": "Start-up check only; the technician starts the update from the app"
+  "notes": "Test release for the manual Bluetooth update"
 }
