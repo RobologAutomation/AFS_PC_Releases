@@ -1,9 +1,9 @@
 {
-  "version": "0.7.4",
+  "version": "0.7.5",
   "channel": "beta",
-  "file": "packages/afs-controller_0.7.4_amd64.deb",
-  "sha256": "b32cc89dcff8208259616808d4508808833402eae0f6233fc042513d9f867d7c",
-  "size": 4168588,
+  "file": "packages/afs-controller_0.7.5_amd64.deb",
+  "sha256": "a14da472b899039c186f0c32d25487e2f3ff7b0acb31552443e25880651d7044",
+  "size": 4171500,
   "published": "2026-09-30",
-  "notes": "The unit stays visible over Bluetooth"
+  "notes": "Recovers a stuck Bluetooth adapter by itself"
 }
