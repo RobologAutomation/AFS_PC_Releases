@@ -1,9 +1,9 @@
 {
-  "version": "0.7.5",
+  "version": "0.8.0",
   "channel": "beta",
-  "file": "packages/afs-controller_0.7.5_amd64.deb",
-  "sha256": "a14da472b899039c186f0c32d25487e2f3ff7b0acb31552443e25880651d7044",
-  "size": 4171500,
+  "file": "packages/afs-controller_0.8.0_amd64.deb",
+  "sha256": "afcd77a2049f8f8372b7640c64fc9719a7b687f47ab915d3573ea5b96bb22995",
+  "size": 4248568,
   "published": "2026-09-30",
-  "notes": "Recovers a stuck Bluetooth adapter by itself"
+  "notes": "Software update from the technician app"
 }
