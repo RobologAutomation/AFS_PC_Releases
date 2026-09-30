@@ -1,0 +1,9 @@
+{
+  "version": "0.7.0",
+  "channel": "beta",
+  "file": "packages/afs-controller_0.7.0_amd64.deb",
+  "sha256": "ebc0eb2d48f6d7fd9e70bb908eb44eb4701665068e5f77c06d34f391453c0243",
+  "size": 4165800,
+  "published": "2026-09-30",
+  "notes": "automatic signed updates"
+}
