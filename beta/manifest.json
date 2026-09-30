@@ -1,9 +1,9 @@
 {
-  "version": "0.7.1",
+  "version": "0.7.2",
   "channel": "beta",
-  "file": "packages/afs-controller_0.7.1_amd64.deb",
-  "sha256": "abcd5157f270d98b5dde46aad86a7c35bec438c42a4b73e77a77d3542668cb25",
-  "size": 4166212,
+  "file": "packages/afs-controller_0.7.2_amd64.deb",
+  "sha256": "ca850aeb0bd59f8d404cd2c7382d278aab9ae99308b3ada5570baffaf8eb36c5",
+  "size": 4165772,
   "published": "2026-09-30",
-  "notes": "update test release"
+  "notes": "deliberately broken test release (rollback test)"
 }
