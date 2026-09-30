@@ -1,9 +1,9 @@
 {
-  "version": "0.8.1",
+  "version": "0.9.0",
   "channel": "beta",
-  "file": "packages/afs-controller_0.8.1_amd64.deb",
-  "sha256": "291ffe424daad7b2a84bc5add68c925b4dc30d94bbcabf2783e347ec9b0609d3",
-  "size": 4248624,
+  "file": "packages/afs-controller_0.9.0_amd64.deb",
+  "sha256": "268f3b9615304cfcfb33420ed7e2c70436b3a4c18e0b85f16ea26d8a0ad1233e",
+  "size": 4274876,
   "published": "2026-09-30",
-  "notes": "Test release for the app's Install button"
+  "notes": "Installs only when the meter is idle (CMD30); checks at start-up"
 }
