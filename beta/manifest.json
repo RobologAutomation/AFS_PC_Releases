@@ -1,9 +1,9 @@
 {
-  "version": "0.7.1",
+  "version": "0.7.3",
   "channel": "beta",
-  "file": "packages/afs-controller_0.7.1_amd64.deb",
-  "sha256": "abcd5157f270d98b5dde46aad86a7c35bec438c42a4b73e77a77d3542668cb25",
-  "size": 4166212,
+  "file": "packages/afs-controller_0.7.3_amd64.deb",
+  "sha256": "d2a335c5c81898d77f724a21f1f82a07530dcc22379ee55c51bde596a848f9e4",
+  "size": 4166756,
   "published": "2026-09-30",
-  "notes": "update test release"
+  "notes": "Bluetooth connects more reliably"
 }
