@@ -1,7 +1,9 @@
 #!/bin/bash
 # AFS Controller installer for an Ubuntu mini-PC.
 #
-#   sudo bash install.sh            back up, clean, download, verify, install
+#   sudo bash install.sh            back up, remove every AFS application and
+#                                   its data (old afsd and any earlier AFS
+#                                   Controller), download, verify, install fresh
 #   sudo bash install.sh --check    report what is there, change nothing
 #   sudo bash install.sh --deb F --sig S   install a package brought by the
 #                                   technician app (PC without internet)
@@ -28,7 +30,7 @@ PUBKEY='-----BEGIN PUBLIC KEY-----
 MCowBQYDK2VwAyEA5JefAv0bOjkkkh0bAL1zjKYablCnBKH6jf9J0tCRV34=
 -----END PUBLIC KEY-----'
 WORK=/tmp/afs-install
-TOTAL=7
+TOTAL=8
 
 CHECK=0; DEB=""; SIG=""; SSH_LOCK=1
 while [ $# -gt 0 ]; do
@@ -71,6 +73,20 @@ print(m["version"], m["file"], m["sha256"], m.get("commit") or "-")'
 
 old_units() { systemctl list-unit-files --no-legend 'afsd*' 2>/dev/null | awk '{print $1}'; }
 
+# The old AFS application (afsd, Dart) and old bench tools: everything of it on disk.
+old_files() {
+    for p in /opt/afsd /etc/afsd /usr/local/bin/afsd /var/lib/afsd /var/log/afsd \
+             /etc/systemd/system/afsd.service /lib/systemd/system/afsd.service; do
+        [ -e "$p" ] && echo "$p"
+    done
+    find /home /root -maxdepth 2 \( -iname 'afsd*' -o -name vegasim -o -name afs-soak -o -name afs-mock \) 2>/dev/null
+}
+
+# State of the AFS Controller itself (records, settings, logins) for a fresh start.
+own_data() {
+    for p in /var/lib/afs /etc/afs; do [ -e "$p" ] && echo "$p"; done
+}
+
 # ---------------------------------------------------------------- check only
 if [ "$CHECK" = 1 ]; then
     . /etc/os-release 2>/dev/null
@@ -81,6 +97,7 @@ if [ "$CHECK" = 1 ]; then
     info service "$(systemctl is-active afs-controller 2>/dev/null || echo none)"
     info disk_free_mb "$(df -Pm / | awk 'NR==2{print $4}')"
     info old_services "$(old_units | tr '\n' ' ' | sed 's/ *$//')"
+    info old_files "$(old_files | tr '\n' ' ' | sed 's/ *$//')"
     if online; then
         info internet yes
         read -r lv _ <<< "$(latest 2>/dev/null || echo unknown)"
@@ -116,8 +133,10 @@ stamp=$(date +%Y%m%d-%H%M%S)
 backup="/var/backups/afs-backup-$stamp.tar.gz"
 mkdir -p "$WORK"
 journalctl -u 'afs*' --no-pager -o short-iso > "$WORK/journal-afs.txt" 2>/dev/null || true
+journalctl -u 'afsd*' --no-pager -o short-iso > "$WORK/journal-afsd.txt" 2>/dev/null || true
 paths=""
-for p in /var/lib/afs /etc/afs /etc/NetworkManager/system-connections "$WORK/journal-afs.txt"; do
+for p in /etc/NetworkManager/system-connections "$WORK/journal-afs.txt" "$WORK/journal-afsd.txt" \
+         $(own_data) $(old_files); do
     [ -e "$p" ] && paths="$paths $p"
 done
 for u in $(old_units); do
@@ -133,15 +152,8 @@ else
     info backup "nothing to back up"
 fi
 
-step 3 "Stopping old services"
-n=0
-for u in $(old_units); do
-    systemctl disable --now "$u" >/dev/null 2>&1 && n=$((n + 1))
-    info stopped "$u"
-done
-[ "$n" = 0 ] && info stopped none
-
-step 4 "Getting the software"
+# The new software is downloaded and verified before anything is removed.
+step 3 "Getting the software"
 if [ -n "$DEB" ]; then
     [ -f "$DEB" ] && [ -f "$SIG" ] || fail NO_PACKAGE "package or signature missing"
     cp "$DEB" "$WORK/pkg.deb"; cp "$SIG" "$WORK/pkg.deb.sig"
@@ -157,7 +169,7 @@ else
     curl -fsS -m 30 -o "$WORK/pkg.deb.sig" "$base/$file.sig" || fail DOWNLOAD "signature download failed"
 fi
 
-step 5 "Checking the signature"
+step 4 "Checking the signature"
 if [ -n "$want" ]; then
     got=$(sha256sum "$WORK/pkg.deb" | cut -d' ' -f1)
     [ "$got" = "$want" ] || fail BAD_HASH "SHA-256 differs from the release list"
@@ -167,7 +179,35 @@ openssl pkeyutl -verify -pubin -inkey "$WORK/release.pub" -rawin -in "$WORK/pkg.
     -sigfile "$WORK/pkg.deb.sig" >/dev/null 2>&1 || fail BAD_SIGNATURE "not signed by the AFS release key"
 info signature ok
 
-step 6 "Installing the software"
+step 5 "Removing the old AFS application"
+for u in $(old_units); do
+    systemctl disable --now "$u" >/dev/null 2>&1
+    info stopped "$u"
+done
+n=0
+for p in $(old_files); do
+    rm -rf --one-file-system "$p" && n=$((n + 1))
+    info removed "$p"
+done
+systemctl daemon-reload 2>/dev/null
+systemctl reset-failed 'afsd*' 2>/dev/null
+[ "$n" = 0 ] && info removed "no old AFS application found"
+
+step 6 "Removing the previous AFS Controller"
+# A fresh start: package, records, settings and logins go (they are in the
+# backup). The network setup stays, so this SSH session keeps working.
+if dpkg -s afs-controller >/dev/null 2>&1; then
+    apt-get purge -y -q -o DPkg::Lock::Timeout=180 afs-controller > "$WORK/purge.log" 2>&1 ||
+        { tail -5 "$WORK/purge.log"; fail REMOVE "the installed AFS Controller could not be removed (delivery in progress?)"; }
+    info removed "AFS Controller $(grep -o 'afs-controller ([^)]*)' "$WORK/purge.log" | head -1)"
+fi
+for p in $(own_data); do
+    rm -rf --one-file-system "$p"
+    info removed "$p"
+done
+rm -f /etc/ssh/sshd_config.d/60-afs-keyonly.conf
+
+step 7 "Installing the software"
 if ! apt-get install -y -q -o DPkg::Lock::Timeout=180 -o Dpkg::Options::=--force-confold \
         "$WORK/pkg.deb" > "$WORK/apt.log" 2>&1; then
     # No internet for dependencies: the package itself needs only the base system.
@@ -182,7 +222,7 @@ done
 v=$(installed_version)
 info installed "$v"
 
-step 7 "Securing SSH"
+step 8 "Securing SSH"
 user="${SUDO_USER:-}"
 home=$(getent passwd "$user" | cut -d: -f6)
 if [ "$SSH_LOCK" = 0 ]; then
