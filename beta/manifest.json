@@ -1,10 +1,10 @@
 {
-  "version": "0.9.7",
+  "version": "0.9.8",
   "channel": "beta",
-  "file": "packages/afs-controller_0.9.7_amd64.deb",
-  "commit": "638b5032cf378b45e6334cb84158fd832b999ec3",
-  "sha256": "5846110686251eea306e6793ac692846c7949900656ddb8b90e5b2cc628b570d",
-  "size": 3099808,
+  "file": "packages/afs-controller_0.9.8_amd64.deb",
+  "commit": "65ec113a2be17426a277765c4e889b15357e55a8",
+  "sha256": "b1256ec88038054ab7f76dd53c00a8bdd726699041e52f65e035dca9461a0f71",
+  "size": 3099548,
   "published": "2026-10-01",
-  "notes": "Records carry the real software version"
+  "notes": "New default login password"
 }
