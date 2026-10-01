@@ -256,7 +256,7 @@ for p in $(own_data); do
     rm -rf --one-file-system "$p"
     info removed "$p"
 done
-rm -f /etc/ssh/sshd_config.d/60-afs-keyonly.conf
+rm -f /etc/ssh/sshd_config.d/60-afs-keyonly.conf /etc/ssh/sshd_config.d/01-afs-keyonly.conf
 
 step 7 "Installing the software"
 if ! apt-get install -y -q -o DPkg::Lock::Timeout=180 -o Dpkg::Options::=--force-confold \
@@ -285,12 +285,21 @@ else
     chown "$user:$(id -gn "$user")" "$home/.ssh/authorized_keys"
     chmod 0600 "$home/.ssh/authorized_keys"
     [ -f /root/.ssh/authorized_keys ] && : > /root/.ssh/authorized_keys
-    printf 'PasswordAuthentication no\nKbdInteractiveAuthentication no\n' > /etc/ssh/sshd_config.d/60-afs-keyonly.conf
+    # sshd keeps the FIRST value of each setting, and the included files are
+    # read in name order: "01-" comes before Ubuntu's 50-cloud-init.conf
+    # (which often turns passwords on).
+    rm -f /etc/ssh/sshd_config.d/60-afs-keyonly.conf
+    keyonly=/etc/ssh/sshd_config.d/01-afs-keyonly.conf
+    printf 'PasswordAuthentication no\nKbdInteractiveAuthentication no\n' > "$keyonly"
     if sshd -t 2>/dev/null; then
         systemctl reload ssh 2>/dev/null || systemctl reload sshd 2>/dev/null || true
-        info ssh "Robolog key only, password logins off"
+        if sshd -T 2>/dev/null | grep -qi '^passwordauthentication no'; then
+            info ssh "Robolog key only, password logins off"
+        else
+            info ssh "Robolog key set; WARNING: sshd still allows passwords"
+        fi
     else
-        rm -f /etc/ssh/sshd_config.d/60-afs-keyonly.conf
+        rm -f "$keyonly"
         info ssh "Robolog key set; password logins kept (sshd rejected the change)"
     fi
 fi
