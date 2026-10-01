@@ -1,2 +1,3 @@
 *.deb binary 
 *.sig binary 
+*.sh text eol=lf
