@@ -1,10 +1,10 @@
 {
-  "version": "0.9.4",
+  "version": "0.9.5",
   "channel": "beta",
-  "file": "packages/afs-controller_0.9.4_amd64.deb",
-  "commit": "2e2764a284f65bb397b95a57ece376eaeb473d30",
-  "sha256": "f16fbf20da5064d8c9e2a9ea316550e5f6775c4d6f5fa97ef493416198eeccfd",
-  "size": 3096488,
+  "file": "packages/afs-controller_0.9.5_amd64.deb",
+  "commit": "d59cab9c24455f998fde0819a8ff56ee6ff86576",
+  "sha256": "f937a90442b1200728296ad18c19b65e0e7ae59b99503ae0c44c8bdc9f636c20",
+  "size": 3097276,
   "published": "2026-09-30",
-  "notes": "Smaller package; update result kept after the restart"
+  "notes": "Fast Bluetooth writes arrive in order"
 }
