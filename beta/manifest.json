@@ -1,10 +1,10 @@
 {
-  "version": "0.9.11",
+  "version": "0.9.12",
   "channel": "beta",
-  "file": "packages/afs-controller_0.9.11_amd64.deb",
-  "commit": "08fab77102adfb84b64fe6a749b530f4f7017160",
-  "sha256": "11dd0e1fa11f9ebb1edd0659185f06747d2401cf987072efa5f69cee24cf1c25",
-  "size": 3101560,
+  "file": "packages/afs-controller_0.9.12_amd64.deb",
+  "commit": "f47f6171937c187518de1d99e09bc90cd093173e",
+  "sha256": "e949bebfd3fdaca4dd27c3f1e20478fb053f7a436629543d2d05fa1f2b43e9d2",
+  "size": 3100380,
   "published": "2026-11-24",
   "notes": "Start-up update test release"
 }
