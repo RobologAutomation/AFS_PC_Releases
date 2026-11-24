@@ -1,10 +1,10 @@
 {
-  "version": "0.9.9",
+  "version": "0.9.10",
   "channel": "beta",
-  "file": "packages/afs-controller_0.9.9_amd64.deb",
-  "commit": "e57ef280c24c584db4a3a0d62bde3a7648d77cfe",
-  "sha256": "20804d4db042e5e9f9d6376b21f9b605e16d03badf62d2af8a0aab8d34e20676",
-  "size": 3101432,
+  "file": "packages/afs-controller_0.9.10_amd64.deb",
+  "commit": "d40fb42478919712a9d9de7c75bf034a3074ac29",
+  "sha256": "90fbab047b710df9ee5ced6a8aa6ec67528e7aa8074fe91100f65121fac1432d",
+  "size": 3100928,
   "published": "2026-11-24",
-  "notes": "Updates install themselves at start-up when idle, with an interlock"
+  "notes": "Start-up update test release"
 }
